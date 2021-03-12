@@ -7,15 +7,15 @@
 BEGIN {
   RS="\n}\n"; FS="\n"; OFS=",";
   print "\n\n------------------------START------------------------\n";
-  print "vs_name_var,description_var,destination_var,partition_var,pool_name_var,vs_snat_var,FILENAME";
+  print "ssl_client_profile_name_var,cert_var,chain_var,key_var,FILENAME";
 }
 
 {
   { #print "START of Record";
     ssl_client_profile_name_var = "empty";
     cert_var = "empty";
-    chain_var = "empty";
-    key_var = "empty";
+    chain_var = "no_chain";
+    key_var = "no_key";
     pool_name_var = "empty";
     vs_snat_var = "no_snat";
   }
@@ -28,14 +28,10 @@ BEGIN {
       chain_var = $i;
     } else if ($i ~ /^            key/) {
       key_name_var=$i;
-    } else if ($i ~ /partition/) {
-      partition_var = $i;
-    } else if ($i ~ /type snat/ || $i ~ /type automap/) {
-      vs_snat_var = $i;
     }
   }
-  { if (vs_name_var != "empty") {
-    print vs_name_var, description_var, destination_var, partition_var, pool_name_var, vs_snat_var, FILENAME;
+  { if (ssl_client_profile_name_var != "empty") {
+    print ssl_client_profile_name_var, cert_var, chain_var, key_var, FILENAME;
   }
   #print "END of Record";
   }
