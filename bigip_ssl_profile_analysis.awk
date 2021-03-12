@@ -16,8 +16,6 @@ BEGIN {
     cert_var = "empty";
     chain_var = "no_chain";
     key_var = "no_key";
-    pool_name_var = "empty";
-    vs_snat_var = "no_snat";
   }
   for(i=1;i<=NF;i++){
     if ($i ~ /ltm profile client-ssl/) {
