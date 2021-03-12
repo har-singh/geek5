@@ -25,7 +25,7 @@ BEGIN {
     } else if ($i ~ /^            chain/) {
       chain_var = $i;
     } else if ($i ~ /^            key/) {
-      key_name_var=$i;
+      key_var=$i;
     }
   }
   { if (ssl_client_profile_name_var != "empty") {
