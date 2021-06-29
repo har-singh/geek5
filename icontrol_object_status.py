@@ -117,6 +117,10 @@ def csv_pool_member_export(device, username, password):
   virtual_data_list = get_request(device, username, password, '/mgmt/tm/ltm/virtual/')
   virtual_data_list = virtual_data_list['items']
   #
+  # Fetch Virtual Server stats (availibility)
+  virtual_stats_list = get_request(device, username, password, '/mgmt/tm/ltm/virtual/stats/')
+  virtual_stats_list = virtual_stats_list['entries']
+  #
 #  tmp = virtual_data_list; virtual_data_list=[]; virtual_data_list.append(tmp[0]); virtual_data_list.append(tmp[1])  # tempory created to fastrack the test
   # loop to collect the pool member information. Collect the sslprofile as well
   for vs in virtual_data_list:
@@ -137,6 +141,11 @@ def csv_pool_member_export(device, username, password):
           member_dict['address'] = member['address']
           member_dict['monitor'] = pool_data.get('monitor')
           member_dict['ssl_profile'] = ssl_profile
+          #
+          vs_availibility_self_link = vs['selfLink'].split('?')[0]+'/stats' # 
+          vs_availibility = virtual_stats_list[vs_availibility_self_link]['nestedStats']['entries']['status.availabilityState']['description']
+          member_dict['vs_availibility'] = vs_availibility
+          #
           pool_member_data.append(member_dict)
     else:
       member_dict = {}
